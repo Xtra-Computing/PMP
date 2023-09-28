@@ -1,0 +1,11 @@
+auc_gnn of Test : avg / std = 0.9779 / nan
+ap_gnn of Test : avg / std = 0.9048 / nan
+gmean_gnn of Test : avg / std = 0.9137 / nan
+recall_macro of Test : avg / std = 0.9165 / nan
+f1_macro of Test : avg / std = 0.9255 / nan
+best_roc_thres of Test : avg / std = 0.3457 / nan
+best_pr_thres of Test : avg / std = 0.5326 / nan
+f1_binary_1 of Test : avg / std = 0.8644 / nan
+f1_binary_0 of Test : avg / std = 0.9865 / nan
+recall_1 of Test : avg / std = 0.8442 / nan
+precision_1 of Test : avg / std = 0.8856 / nan
