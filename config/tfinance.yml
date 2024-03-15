@@ -1,7 +1,7 @@
 dataset: "tfinance"
 
 
-LA-SAGE-S: # in tmux 7 gpu 2 multi run: 0.9710 / 0.0023  (选取这个结果)
+LA-SAGE-S: # in tmux 7 gpu 2 multi run: 0.9710 / 0.0023  
   add_self_loop: false
   agg: 'mean'
   batch_size: 256

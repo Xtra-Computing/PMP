@@ -135,7 +135,6 @@ class LILinear(nn.Module):
         # 2st later: w_src: (256, bs) src should be (bs, 256)   tran_src should be (256,256)
         #            weight: (256,256)           
 
-        # w_src 256*64  src 64*32
         t_src = self.trans_src(src)   # (BS, in_dim) 
 
         trans_input = input * t_src   # (BS, in_dim)
@@ -171,7 +170,7 @@ def agg_func(nodes):
 def mp_func(edges):
     src_fake_label = edges.src['label_unk']
     # src =  edges.edges()[0]
-    src = edges.src['_ID']  # [0.0145, 0.0290, 0.0472,  ..., 0.0087, 0.0127, 0.0289]  3702
+    src = edges.src['_ID']  
     dst = edges.dst['_ID']
     return {'m': edges.src['h'], 'src': src, 'src_fake_label': src_fake_label}
 
@@ -274,21 +273,20 @@ class LASAGESConv(nn.Module):
         return self.balance_w(self.fc_balance(feats))
 
 
-    def forward(self, graph, feat, edge_weight=None):  # feat torch.Size([42689, 32])所有最外层节点 graph: 一个relation的图
+    def forward(self, graph, feat, edge_weight=None):  
         with graph.local_scope():
             graph.srcdata['h'] = feat
             if isinstance(feat, tuple):
                 feat_src = self.feat_drop(feat[0])
                 feat_dst = self.feat_drop(feat[1])
             else:
-                feat_src = feat_dst = self.feat_drop(feat)  # 最外层节点特征  src 中包含了dst nodes
+                feat_src = feat_dst = self.feat_drop(feat)  
                 if graph.is_block:
                     # 终点的node features
-                    feat_dst = feat_src[: graph.number_of_dst_nodes()]  # blocks[0].srcdata['feature'] 采样器会将终点id放在最前面
+                    feat_dst = feat_src[: graph.number_of_dst_nodes()]  
                     ndst     = graph.srcdata['_ID'][: graph.number_of_dst_nodes()]
             # graph.srcdata['hl'] = torch.cat((graph.srcdata['h'], graph.srcdata['label_unk'].unsqueeze(1)), dim=-1)        
-            msg_fn = fn.copy_u("h", "m")  # 邻居u的h （feature）特征放入message box中
-
+            msg_fn = fn.copy_u("h", "m")  
             # msg_fn = fn.copy_u("hl", "m")
             
             if edge_weight is not None:
@@ -432,11 +430,11 @@ class LASAGE_S(nn.Module):
     def forward(self, blocks, relations, feats):   # blocks 
         # print(blocks)
         # print(feats.shape) torch.Size([42689, 32])
-        h = feats # 输入最外层所有邻居 (三个关系的所有最外层特征)
+        h = feats 
         for l, (layer, block) in enumerate(zip(self.layers, blocks)):  # blocks of one relation in one layer
-            layer_emb = []  # 一个layer 所有relation的输出
+            layer_emb = []  
             for etype in relations:
-                b_graph = block[etype]  # 一个relation 下的第3和第2层邻居 组成的子图
+                b_graph = block[etype]  
                 # dgl_subgraph = dgl.block_to_graph(b_graph)
                 # print(dgl_subgraph.ndata['label'])
                 # print(b_graph.srcdata['label'])
@@ -450,7 +448,7 @@ class LASAGE_S(nn.Module):
                 relation_agg_emb = torch.sum(layer_emb, dim=0)
             h = self.relation_mlp[l](relation_agg_emb)
                     
-            # h = layer(block, h)  # block 包含了相邻两个layer的节点和边
+            # h = layer(block, h)  
             if l != len(self.layers) - 1:
                 h = F.relu(h)
                 # h = self.dropout(h)  #

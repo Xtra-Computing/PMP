@@ -74,7 +74,7 @@ def calc_gmean(conf):
 
 
 def eval_model(self, y_true, y_prob, y_pred):
-    """计算各评价指标
+    """
     :param y_true: torch.Tensor
     :param y_prob: torch.Tensor
     :param y_pred: torch.Tensor
@@ -95,18 +95,6 @@ def eval_model(self, y_true, y_prob, y_pred):
     conf_gnn = metrics.confusion_matrix(y_true, y_pred)
     gmean_gnn = calc_gmean(conf_gnn)
     tn, fp, fn, tp = conf_gnn.ravel()
-
-    # print(f"f1-macro={f1_macro:>2.4f} | AUC={auc_gnn:>2.4f}\n"
-    #       f"Gmean={gmean_gnn:>2.4f} | AP(gnn)={ap_gnn:>2.4f}\n"
-    #       f"Precision(1)={precision_1:>2.4f} | Recall(1)={recall_1:>2.4f}")
-
-    # print(f"TN={tn:>5d} FP={fp:>5d} FN={fn:>5d} TP={tp:>5d}")
-
-    # print(f"f1-fraud={f1_binary_1:>2.4f} | f1-benign={f1_binary_0:>2.4f}\n"
-    #       f"f1-micro={f1_micro:>2.4f} | f1-macro={f1_macro:>2.4f}\n"
-    #       f"ACC={acc:>2.4f} | Recall(macro)={recall_macro:>2.4f}\n")
-
-    # print(metrics.classification_report(y_true=labels, y_pred=preds, digits=4))
 
     DataType = namedtuple('Metrics', ['f1_binary_1', 'f1_binary_0', 'f1_macro', 'auc_gnn',
                                       'gmean_gnn', 'recall_1', 'precision_1', 'ap_gnn',

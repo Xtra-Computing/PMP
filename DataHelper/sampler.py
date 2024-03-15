@@ -68,59 +68,6 @@ class LWNeighborSampler(BlockSampler):
 
                     sampled_eids = torch.cat(list(eid2class.values()), dim = -1).long()
 
-                    # nei_fra         = nei[nei_fake_labels == 1]
-                    # nei_fra_eid     = eid[nei_fake_labels == 1]
-
-                    # nei_ben         = nei[nei_fake_labels == 0]
-                    # nei_ben_eid     = eid[nei_fake_labels == 0]
-
-                    # nei_unk         = nei[nei_fake_labels == 2]
-                    # nei_unk_eid     = eid[nei_fake_labels == 2]
-
-                    # if nei_fra.shape[0] >= num_neigh:
-                    #     perm = torch.randperm(nei_fra.size(0))
-                    #     sampled_fra_neighbors = nei_fra[perm[:num_neigh]]
-                    #     sampled_fra_eid       = nei_fra_eid[perm[:num_neigh]]
-                    # elif nei_fra.shape[0] > 0:
-                    #     # sampled_fra_neighbors = random.choices(nei_fra, k=num_neigh)
-                    #     sampled_fra_neighbors_tuple = random.choices(list(enumerate(nei_fra)), k=num_neigh)
-                    #     sampled_fra_nei_idx         = [k[0] for k in sampled_fra_neighbors_tuple]
-                    #     sampled_fra_neighbors       = nei_fra[sampled_fra_nei_idx]
-                    #     sampled_fra_eid             = nei_fra_eid[sampled_fra_nei_idx]
-                    # else:
-                    #     sampled_fra_neighbors = node.repeat(num_neigh)
-                    #     sampled_fra_eid       = torch.tensor([])
-                    
-                    # if nei_ben.shape[0] >= num_neigh:
-                    #     perm = torch.randperm(nei_ben.size(0))      
-                    #     sampled_ben_neighbors = nei_ben[perm[:num_neigh]]
-                    #     sampled_ben_eid       = nei_ben_eid[perm[:num_neigh]]
-                    # elif nei_ben.shape[0] > 0:
-                    #     # sampled_ben_neighbors = random.choices(nei_ben, k=num_neigh)
-                    #     sampled_ben_neighbors_tuple = random.choices(list(enumerate(nei_ben)), k = num_neigh)
-                    #     sampled_bei_nei_idx         = [k[0] for k in sampled_ben_neighbors_tuple]
-                    #     sampled_ben_neighbors       = nei_ben[sampled_bei_nei_idx]
-                    #     sampled_ben_eid             = nei_ben_eid[sampled_bei_nei_idx]
-                    # else:
-                    #     sampled_ben_neighbors = node.repeat(num_neigh)
-                    #     sampled_fra_eid       = torch.tensor([])
-                    
-                    # if nei_unk.shape[0] >= num_neigh:
-                    #     perm = torch.randperm(nei_unk.size(0))      
-                    #     sampled_unk_neighbors = nei_unk[perm[:num_neigh]]
-                    #     sampled_unk_eid       = nei_unk_eid[perm[:num_neigh]]
-                    # elif nei_unk.shape[0] > 0:
-                    #     # sampled_unk_neighbors = random.choices(nei_unk, k=num_neigh)
-                    #     sampled_unk_neighbors_tuple = random.choices(list(enumerate(nei_unk)), k = num_neigh)
-                    #     sampled_unk_nei_idx         = [k[0] for k in sampled_unk_neighbors_tuple]
-                    #     sampled_unk_neighbors       = nei_unk[sampled_unk_nei_idx]
-                    #     sampled_unk_eid             = nei_unk_eid[sampled_unk_nei_idx]
-                    # else:
-                    #     sampled_unk_neighbors = node.repeat(num_neigh)
-                    #     sampled_unk_eid       = torch.tensor([])
-
-                    # sampled_neighbors = torch.unique(torch.cat((sampled_fra_neighbors,sampled_ben_neighbors,sampled_unk_neighbors)))
-                    # sampled_eid       = torch.unique(torch.cat((sampled_fra_eid, sampled_ben_eid, sampled_unk_eid))).long()
                     edge_mask[sampled_eids] = 1
                 new_edges_masks[etype] = edge_mask.bool()
             return edge_subgraph(g, new_edges_masks, relabel_nodes=False)
